@@ -62,24 +62,24 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url: `${url}api/v1/sales-chart`,
+        url: `${url}api/v1/dashboard/sales-chart`,
         dataType: "json",
         success: function (data) {
             console.log(data);
-            const { rows } = data
+            const { values, labels } = data
             var ctx = $("#salesChart");
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: rows.map(row => row.month),
+                    labels,
                     datasets: [{
                         label: 'Monthly sales',
-                        data: rows.map(row => row.total),
+                        data: values,
                         backgroundColor: () => {
                             //generates random colours and puts them in string
 
                             var colors = [];
-                            for (var i = 0; i < rows.length; i++) {
+                            for (var i = 0; i < values.length; i++) {
                                 var letters = '0123456789ABCDEF'.split('');
                                 var color = '#';
                                 for (var x = 0; x < 6; x++) {
@@ -110,25 +110,25 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url: `${url}api/v1/items-chart`,
+        url: `${url}api/v1/dashboard/items-chart`,
         dataType: "json",
         success: function (data) {
             console.log(data);
-            const { rows } = data
+            const { values, labels } = data
             var ctx = $("#itemsChart");
             new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: rows.map(row => row.items),
+                    labels,
                     datasets: [{
                         label: 'number of items sold',
-                        data: rows.map(row => row.total),
+                        data: values,
 
                         backgroundColor: () => {
                             //generates random colours and puts them in string
 
                             var colors = [];
-                            for (var i = 0; i < rows.length; i++) {
+                            for (var i = 0; i < values.length; i++) {
                                 var letters = '0123456789ABCDEF'.split('');
                                 var color = '#';
                                 for (var x = 0; x < 6; x++) {
