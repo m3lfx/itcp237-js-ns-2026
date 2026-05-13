@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const url = 'http://192.168.1.28:8000/'
+    const url = 'http://172.34.11.117:8000/'
     function getCart() {
         let cart = localStorage.getItem('cart');
         return cart ? JSON.parse(cart) : [];
@@ -79,49 +79,47 @@ $(document).ready(function () {
 
     $('#header').load("header.html");
 
-    // $('#checkoutBtn').on('click', function () {
+    $('#checkoutBtn').on('click', function () {
 
-    //     itemCount = 0;
-    //     priceTotal = 0;
-    //     let cart = getCart()
-    //     // let userId = getUserId()
+        itemCount = 0;
+        priceTotal = 0;
+        let cart = getCart()
+        // let userId = getUserId()
 
-    //     console.log(JSON.stringify(cart));
+        // console.log(JSON.stringify(cart));
 
-    //     const payload = JSON.stringify({
-    //         cart
-    //     });
-    //     console.log(payload)
-    //     // if (getToken()) {
-    //     $.ajax({
-    //         type: "POST",
-    //         url: `${url}api/v1/items/checkout`,
-    //         data: payload,
-    //         dataType: "json",
-    //         processData: false,
-    //         contentType: 'application/json; charset=utf-8',
-    //         // headers: {
-    //         //     "Authorization": "Bearer " + getToken()
-    //         // },
-    //         success: function (data) {
-    //             console.log(data);
-    //             // alert(data.status);
-    //             Swal.fire({
-    //                 icon: "success",
-    //                 text: data.status,
-    //             });
-    //             localStorage.removeItem('cart')
-    //             renderCart();
-    //         },
-    //         error: function (error) {
-    //             console.log(error);
-    //         }
-    //     });
+        const payload = JSON.stringify(cart);
+        console.log(payload)
+        // if (getToken()) {
+        $.ajax({
+            type: "POST",
+            url: `${url}api/v1/items/checkout`,
+            data: payload,
+            dataType: "json",
+            processData: false,
+            contentType: 'application/json; charset=utf-8',
+            // headers: {
+            //     "Authorization": "Bearer " + getToken()
+            // },
+            success: function (data) {
+                console.log(data);
+                // alert(data.status);
+                Swal.fire({
+                    icon: "success",
+                    text: data.status,
+                });
+                localStorage.removeItem('cart')
+                renderCart();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
 
-    //     // }
+        // }
 
 
-    // });
+    });
 
     renderCart()
 

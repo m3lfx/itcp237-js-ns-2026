@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const url = 'http://192.168.1.28:8000'
+    const url = 'http://172.34.11.117:8000'
 
     $('#itable').DataTable({
         ajax: {
