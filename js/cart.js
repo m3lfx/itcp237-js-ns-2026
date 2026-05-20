@@ -53,21 +53,21 @@ $(document).ready(function () {
     //     return userId ?? '';
     // }
 
-    // const getToken = () => {
-    //     const token = sessionStorage.getItem('token');
-
-    //     if (!token) {
-    //         Swal.fire({
-    //             icon: 'warning',
-    //             text: 'You must be logged in to access this page.',
-    //             showConfirmButton: true
-    //         }).then(() => {
-    //             window.location.href = 'login.html';
-    //         });
-    //         return;
-    //     }
-    //     return JSON.parse(token)
-    // }
+    const getToken = () => {
+        const token = sessionStorage.getItem('token');
+        console.log(token)
+        if (!token) {
+            Swal.fire({
+                icon: 'warning',
+                text: 'You must be logged in to access this page.',
+                showConfirmButton: true
+            }).then(() => {
+                window.location.href = 'login.html';
+            });
+            return;
+        }
+        return JSON.parse(token)
+    }
 
     $('#cartTable').on('click', '.remove-item', function () {
         let idx = $(this).data('idx');
@@ -89,34 +89,34 @@ $(document).ready(function () {
         // console.log(JSON.stringify(cart));
 
         const payload = JSON.stringify(cart);
-        console.log(payload)
-        // if (getToken()) {
-        $.ajax({
-            type: "POST",
-            url: `${url}api/v1/items/checkout`,
-            data: payload,
-            dataType: "json",
-            processData: false,
-            contentType: 'application/json; charset=utf-8',
-            // headers: {
-            //     "Authorization": "Bearer " + getToken()
-            // },
-            success: function (data) {
-                console.log(data);
-                // alert(data.status);
-                Swal.fire({
-                    icon: "success",
-                    text: data.status,
-                });
-                localStorage.removeItem('cart')
-                renderCart();
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+        console.log(getToken())
+        if (getToken()) {
+            $.ajax({
+                type: "POST",
+                url: `${url}api/v1/items/checkout`,
+                data: payload,
+                dataType: "json",
+                processData: false,
+                contentType: 'application/json; charset=utf-8',
+                headers: {
+                    "Authorization": "Bearer " + getToken()
+                },
+                success: function (data) {
+                    console.log(data);
+                    // alert(data.status);
+                    Swal.fire({
+                        icon: "success",
+                        text: data.status,
+                    });
+                    localStorage.removeItem('cart')
+                    renderCart();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
 
-        // }
+        }
 
 
     });

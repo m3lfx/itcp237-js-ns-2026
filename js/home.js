@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const url = 'http://172.34.11.117:8000/'
+    const url = 'http://localhost:4000/'
     var itemCount = 0;
     var priceTotal = 0;
     var quantity = 0;
@@ -18,11 +18,11 @@ $(document).ready(function () {
         url: `${url}api/v1/items`,
         dataType: 'json',
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             $("#items").empty();
             //     // Start a row
             let row;
-            $.each(data, function (key, value) {
+            $.each(data.rows, function (key, value) {
                 if (key % 4 === 0) {
                     row = $('<div class="row"></div>');
                     $("#items").append(row);
@@ -35,9 +35,9 @@ $(document).ready(function () {
                 <h5 class="card-title">${value.description}</h5>
                 <p class="card-text">₱ ${value.sell_price}</p>
                 <p class="card-text">
-                <small class="text-muted">Stock: ${value.stock.quantity ?? 0}</small>
+                <small class="text-muted">Stock: ${value.quantity ?? 0}</small>
                 </p>
-                <a href="#!" class="btn btn-primary show-details" role="button" data-id="${value.item_id}" data-description="${value.description}" data-price="${value.sell_price}" data-image="${value.img_path}" data-stock="${value.stock.quantity ?? 0}">Details</a>
+                <a href="#!" class="btn btn-primary show-details" role="button" data-id="${value.item_id}" data-description="${value.description}" data-price="${value.sell_price}" data-image="${value.img_path}" data-stock="${value.quantity ?? 0}">Details</a>
                 </div>
                 </div>
                 </div>`;
@@ -122,7 +122,7 @@ $(document).ready(function () {
         itemCount++;
         $('#itemCount').text(itemCount).css('display', 'block');
         $('#productDetailsModal').modal('hide')
-        console.log(cart)
+        // console.log(cart)
 
     });
 
