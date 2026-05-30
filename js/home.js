@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const url = 'http://localhost:4000/'
+    const url = 'http://192.168.68.107:4000/'
     var itemCount = 0;
     var priceTotal = 0;
     var quantity = 0;

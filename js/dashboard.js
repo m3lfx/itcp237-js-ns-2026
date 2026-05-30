@@ -1,28 +1,47 @@
 $(document).ready(function () {
-    const url = 'http://172.34.11.117:8000/'
+    const url = 'http://192.168.68.107:4000/'
+    const getToken = () => {
+        const token = sessionStorage.getItem('token');
+
+        if (!token) {
+            Swal.fire({
+                icon: 'warning',
+                text: 'You must be logged in to access this page.',
+                showConfirmButton: true
+            }).then(() => {
+                window.location.href = 'login.html';
+            });
+            return;
+        }
+        return JSON.parse(token)
+    }
     $.ajax({
         method: "GET",
-        url: `${url}api/v1/dashboard/address-chart`,
+        url: `${url}api/v1/address-chart`,
         dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + getToken()
+        },
         success: function (data) {
             // console.log(data);
-            const { values, labels } = data
-            console.log(values, labels)
+            // const { values, labels } = data
+            const { rows } = data
+            // console.log(values, labels)
             var ctx = $("#addressChart");
 
             new Chart(ctx, {
                 type: 'bar',
                 data: {
                     // labels: ['taguig', 'tenment']
-                    labels: labels,
+                    labels: rows.map(item => item.addressline),
                     datasets: [{
                         label: 'Number of Customers per town',
-                        data: values,
+                        data: rows.map(item => item.total),
                         backgroundColor: () => {
                             //generates random colours and puts them in string
 
                             var colors = [];
-                            for (var i = 0; i < values.length; i++) {
+                            for (var i = 0; i < rows.length; i++) {
                                 var letters = '0123456789ABCDEF'.split('');
                                 var color = '#';
                                 for (var x = 0; x < 6; x++) {
@@ -62,24 +81,28 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url: `${url}api/v1/dashboard/sales-chart`,
+        url: `${url}api/v1/sales-chart`,
         dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + getToken()
+        },
         success: function (data) {
             console.log(data);
             const { values, labels } = data
+            const { rows } = data
             var ctx = $("#salesChart");
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels,
+                    labels: rows.map(item => item.month),
                     datasets: [{
                         label: 'Monthly sales',
-                        data: values,
+                        data: rows.map(item => item.total),
                         backgroundColor: () => {
                             //generates random colours and puts them in string
 
                             var colors = [];
-                            for (var i = 0; i < values.length; i++) {
+                            for (var i = 0; i < rows.length; i++) {
                                 var letters = '0123456789ABCDEF'.split('');
                                 var color = '#';
                                 for (var x = 0; x < 6; x++) {
@@ -110,25 +133,29 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url: `${url}api/v1/dashboard/items-chart`,
+        url: `${url}api/v1/items-chart`,
         dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + getToken()
+        },
         success: function (data) {
             console.log(data);
-            const { values, labels } = data
+            // const { values, labels } = data
+            const { rows } = data
             var ctx = $("#itemsChart");
             new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels,
+                    labels: rows.map(item => item.items),
                     datasets: [{
                         label: 'number of items sold',
-                        data: values,
+                        data: rows.map(item => item.total),
 
                         backgroundColor: () => {
                             //generates random colours and puts them in string
 
                             var colors = [];
-                            for (var i = 0; i < values.length; i++) {
+                            for (var i = 0; i < rows.length; i++) {
                                 var letters = '0123456789ABCDEF'.split('');
                                 var color = '#';
                                 for (var x = 0; x < 6; x++) {
