@@ -141,11 +141,52 @@ $(document).ready(function () {
                     timerProgressBar: true
                 });
                 sessionStorage.removeItem('userId')
-                // window.location.href = 'home.html'
+                sessionStorage.removeItem('token')
+                window.location.href = 'home.html'
             },
             error: function (error) {
                 console.log(error);
             }
         });
+    });
+
+    $("#logout").on('click', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            text: 'logout',
+            showConfirmButton: false,
+            position: 'bottom-right',
+            timer: 1000,
+            timerProgressBar: true
+
+        });
+        sessionStorage.removeItem('token')
+        sessionStorage.removeItem('userId')
+        window.location.href = 'login.html'
+
+    });
+
+    $("#profile").load("header.html", function () {
+        // After header is loaded, check sessionStorage for userId
+        if (sessionStorage.getItem('token')) {
+            // Change Login link to Logout
+            const $loginLink = $('a.nav-link[href="login.html"]');
+            $loginLink.text('Logout').attr({ 'href': '#!', 'id': 'logout-link' }).on('click', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    text: 'logout',
+                    showConfirmButton: false,
+                    position: 'bottom-right',
+                    timer: 1000,
+                    timerProgressBar: true
+
+                });
+                sessionStorage.clear();
+                window.location.href = 'login.html';
+            });
+        }
+        else {
+            window.location.href = 'login.html';
+        }
     });
 })
